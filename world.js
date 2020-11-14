@@ -1,6 +1,6 @@
-import {SpeedPowerup} from "./speedpowerup.js"
-import {Platform} from "./platform.js";
-import { NextWorld } from "./nextlevel.js";
+import { JumpPowerup } from "./jumppowerup.js"
+import { Platform } from "./platform.js";
+import { Coin } from "./coin.js";
 
 class World {
     constructor(objString) {
@@ -20,8 +20,7 @@ class World {
                     player.x = j * this.objSize;
                     player.y = i * this.objSize;
                     this.objArray[i].push(0);
-                }
-                else if (this.objString[i][j] === ">") {
+                } else if (this.objString[i][j] === ">") {
                     nextWorld.x = j * this.objSize;
                     nextWorld.y = i * this.objSize;
                     this.objArray[i].push(nextWorld);
@@ -115,16 +114,54 @@ class World {
                         getTileSprite(9)
                     );
                     this.objArray[i].push(platform);
-                }
-                else if(this.objString[i][j] === "!") {
-                    let speedPowerup = new SpeedPowerup(
+                } else if (this.objString[i][j] === "!") {
+                    let jumpPowerup = new JumpPowerup(
                         j * this.objSize,
                         i * this.objSize,
                         this.objSize,
                         tileSheet,
                         getTileSprite("!")
                     );
-                    this.objArray[i].push(speedPowerup);
+                    this.objArray[i].push(jumpPowerup);
+                } else if (this.objString[i][j] === ".1") {
+                    let coin = new Coin(j * this.objSize,
+                        i * this.objSize, this.objSize,
+                        tileSheet,
+                        getTileSprite(".1"),
+                        10,
+                        ".1"
+                    );
+                    this.objArray[i].push(coin);
+                } else if (this.objString[i][j] === ".2") {
+                    let coin = new Coin(j * this.objSize,
+                        i * this.objSize, this.objSize,
+                        tileSheet,
+                        getTileSprite(".2"),
+                        25,
+                        ".2"
+                    );
+                    this.objArray[i].push(coin);
+
+                } else if (this.objString[i][j] === ".3") {
+                    let coin = new Coin(j * this.objSize,
+                        i * this.objSize,
+                        this.objSize,
+                        tileSheet,
+                        getTileSprite(".3"),
+                        50,
+                        ".3"
+                    );
+                    this.objArray[i].push(coin);
+                } else if (this.objString[i][j] === ".4") {
+                    let coin = new Coin(j * this.objSize,
+                        i * this.objSize,
+                        this.objSize,
+                        tileSheet,
+                        getTileSprite(".4"),
+                        500,
+                        ".4"
+                    );
+                    this.objArray[i].push(coin);
                 }
             }
         }
@@ -178,7 +215,19 @@ function getTileSprite(spriteID) {
     } else if (spriteID === "!") {
         startPosition.x = 1 * startPosition.tileSize;
         startPosition.y = 9 * startPosition.tileSize;
+    } else if (spriteID === ".1") {
+        startPosition.x = 5 * startPosition.tileSize;
+        startPosition.y = 7 * startPosition.tileSize;
+    } else if (spriteID === ".2") {
+        startPosition.x = 6 * startPosition.tileSize;
+        startPosition.y = 7 * startPosition.tileSize;
+    } else if (spriteID === ".3") {
+        startPosition.x = 5 * startPosition.tileSize;
+        startPosition.y = 8 * startPosition.tileSize;
+    } else if (spriteID === ".4") {
+        startPosition.x = 6 * startPosition.tileSize;
+        startPosition.y = 8 * startPosition.tileSize;
     }
     return startPosition;
 }
-export {World};
+export { World };

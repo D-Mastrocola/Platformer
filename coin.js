@@ -1,16 +1,17 @@
-class Platform {
-    constructor(x, y, width, height, sprite, tileXY) {
+class Coin {
+    constructor(x, y, size, sprite, tileXY, score, spriteID) {
+        this.score = score;
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
+        this.size = size;
         this.sprite = sprite;
         this.tileXY = tileXY;
+        this.spriteID = spriteID;
     }
-    update() {}
-    draw(context) {
-        //context.drawImage(this.sprite, this.x, this.y, this.width, this.height);
+    update() {
 
+    }
+    draw(context) {
         context.drawImage(
             this.sprite,
             this.tileXY.x,
@@ -19,10 +20,9 @@ class Platform {
             this.tileXY.tileSize,
             this.x,
             this.y,
-            this.width,
-            this.height
+            this.size,
+            this.size
         );
     }
 }
-
-export { Platform };
+export { Coin };

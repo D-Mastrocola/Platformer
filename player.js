@@ -7,6 +7,7 @@ class Player {
         this.jumped = false;
         this.jumpSpeed = -7;
         this.jumpMultiplier = 1;
+        this.speedMultiplier = 1;
         this.moveSpeed = 5;
         this.moveKeys = {
             a: 0,
@@ -15,7 +16,6 @@ class Player {
         };
         this.xSpeed = 0;
         this.ySpeed = 0;
-        this.speedMultiplier = 1;
         this.sprites = sprites;
         this.sprite = sprite;
         this.frame = 0;
@@ -133,14 +133,16 @@ class Player {
                                 this.y + this.ySpeed < world.objArray[i][j].y + this.height
                             ) {
                                 //Checks to see if is the speed powerup
-                                if(world.objArray[i][j].spriteID === "!") {
-                                    this.score += 10
-                                    this.speedMultiplier = 1.4;
+                                if (world.objArray[i][j].spriteID === "!") {
                                     this.jumpMultiplier = 1.6;
                                     world.objArray[i][j] = 0;
                                     continue;
                                 } else if (world.objArray[i][j].spriteID === ">") {
                                     nextLevel.nextWorld(world, worldArray, this, tileSheet);
+                                    continue;
+                                } else if (world.objArray[i][j].spriteID === ".1" || world.objArray[i][j].spriteID === ".2" || world.objArray[i][j].spriteID === ".3" || world.objArray[i][j].spriteID === ".4") {
+                                    this.score += world.objArray[i][j].score;
+                                    world.objArray[i][j] = 0;
                                     continue;
                                 }
                                 if (this.x + this.width > world.objArray[i][j].x &&
