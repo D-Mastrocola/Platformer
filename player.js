@@ -8,12 +8,13 @@ class Player {
         this.jumpSpeed = -7;
         this.jumpMultiplier = 1;
         this.speedMultiplier = 1;
-        this.moveSpeed = 5;
+        this.moveSpeed = 6;
         this.moveKeys = {
             a: 0,
             d: 0,
             space: 0,
         };
+        this.xAcceleration = 1.2;
         this.xSpeed = 0;
         this.ySpeed = 0;
         this.sprites = sprites;
@@ -35,20 +36,20 @@ class Player {
     setSpeed(GRAVITY) {
         if (this.moveKeys.a === 1) {
             if (this.moveKeys.d !== 1) {
-                this.xSpeed = -this.moveSpeed * this.speedMultiplier;
+                this.xSpeed -= this.xAcceleration;
                 this.dir = "left";
-            } else {
-                this.xSpeed = 0;
+                if(this.xSpeed < -this.moveSpeed * this.speedMultiplier) {
+                    this.xSpeed = -this.moveSpeed * this.speedMultiplier;
+                }
             }
         } else if (this.moveKeys.d === 1) {
             if (this.moveKeys.a !== 1) {
-                this.xSpeed = this.moveSpeed * this.speedMultiplier;
+                this.xSpeed += this.xAcceleration;
                 this.dir = "right";
-            } else {
-                this.xSpeed = 0;
-            }
-        } else {
-            this.xSpeed = 0;
+                if(this.xSpeed > this.moveSpeed * this.speedMultiplier) {
+                    this.xSpeed = this.moveSpeed * this.speedMultiplier;
+                }
+            } 
         }
         if (this.moveKeys.space === 1) {
             if (this.jumped === false) {
@@ -96,7 +97,7 @@ class Player {
         }
         this.ySpeed += GRAVITY;
     }
-    checkCollisions(world, worldArray, nextLevel, tileSheet) {
+    checkCollisions(world, worldArray, nextLevel, tileSheet, FRICTION) {
         //World bounds
         if (this.x + this.xSpeed <= 0) {
             this.x = 0;
@@ -154,6 +155,14 @@ class Player {
                                         this.y = world.objArray[i][j].y + this.height;
                                     }
                                     this.ySpeed = 0;
+                                    if(this.xSpeed > 0 && this.moveKeys.d !== 1) {
+                                        this.xSpeed -= FRICTION;
+                                        if(this.xSpeed < 0) this.xSpeed = 0;
+                                    } else if(this.xSpeed < 0 && this.moveKeys.a !== 1){
+                                        this.xSpeed += FRICTION;
+                                        if(this.xSpeed > 0) this.xSpeed = 0;
+                                    }
+                                    
                                 } else if (this.y + this.height > world.objArray[i][j].y &&
                                     this.y < world.objArray[i][j].y + this.height) {
                                     if (this.xSpeed > 0) {
@@ -163,9 +172,6 @@ class Player {
                                     }
                                     this.xSpeed = 0;
                                 }
-
-
-
                             }
                         }
                     }
@@ -174,9 +180,9 @@ class Player {
         }
 
     }
-    update(GRAVITY, world, worldArray, nextWorld, tileSheet) {
+    update(GRAVITY, FRICTION, world, worldArray, nextWorld, tileSheet) {
         this.setSpeed(GRAVITY);
-        this.checkCollisions(world, worldArray, nextWorld, tileSheet);
+        this.checkCollisions(world, worldArray, nextWorld, tileSheet, FRICTION);
         this.lastPosition.x = this.x;
         this.lastPosition.y = this.y;
         this.x += this.xSpeed;

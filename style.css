@@ -2,6 +2,7 @@ html,
 body {
     margin: 0;
     display: flex;
+    font-size: 1.1em;
     justify-content: center;
     align-items: center;
     background-color: #444;
@@ -9,4 +10,29 @@ body {
 
 img {
     display: none;
+}
+h2 {
+    color: #000;
+}
+#controls {
+    background-color: #fff;
+    height: 608px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #444;
+}
+#controls ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#controls ul li {
+    margin: .5em 0;
+
+}
+.command {
+    font-weight: bolder;
+    color: black;
 }
