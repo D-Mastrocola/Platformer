@@ -12,7 +12,7 @@ var currentWorld
 let gameState;
 
 const GRAVITY = .3;
-const FRICTION = .35;
+const FRICTION = .8;
 
 let player;
 let nextWorld;

@@ -8,12 +8,13 @@ class Player {
         this.jumpSpeed = -7;
         this.jumpMultiplier = 1;
         this.speedMultiplier = 1;
-        this.moveSpeed = 5;
+        this.moveSpeed = 6;
         this.moveKeys = {
             a: 0,
             d: 0,
             space: 0,
         };
+        this.xAcceleration = 1.2;
         this.xSpeed = 0;
         this.ySpeed = 0;
         this.sprites = sprites;
@@ -35,13 +36,19 @@ class Player {
     setSpeed(GRAVITY) {
         if (this.moveKeys.a === 1) {
             if (this.moveKeys.d !== 1) {
-                this.xSpeed = -this.moveSpeed * this.speedMultiplier;
+                this.xSpeed -= this.xAcceleration;
                 this.dir = "left";
+                if(this.xSpeed < -this.moveSpeed * this.speedMultiplier) {
+                    this.xSpeed = -this.moveSpeed * this.speedMultiplier;
+                }
             }
         } else if (this.moveKeys.d === 1) {
             if (this.moveKeys.a !== 1) {
-                this.xSpeed = this.moveSpeed * this.speedMultiplier;
+                this.xSpeed += this.xAcceleration;
                 this.dir = "right";
+                if(this.xSpeed > this.moveSpeed * this.speedMultiplier) {
+                    this.xSpeed = this.moveSpeed * this.speedMultiplier;
+                }
             } 
         }
         if (this.moveKeys.space === 1) {
@@ -148,10 +155,10 @@ class Player {
                                         this.y = world.objArray[i][j].y + this.height;
                                     }
                                     this.ySpeed = 0;
-                                    if(this.xSpeed > 0) {
+                                    if(this.xSpeed > 0 && this.moveKeys.d !== 1) {
                                         this.xSpeed -= FRICTION;
                                         if(this.xSpeed < 0) this.xSpeed = 0;
-                                    } else {
+                                    } else if(this.xSpeed < 0 && this.moveKeys.a !== 1){
                                         this.xSpeed += FRICTION;
                                         if(this.xSpeed > 0) this.xSpeed = 0;
                                     }
