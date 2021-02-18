@@ -8,7 +8,7 @@ class Player {
         this.jumpSpeed = -7;
         this.jumpMultiplier = 1;
         this.speedMultiplier = 1;
-        this.moveSpeed = 6;
+        this.moveSpeed = 5;
         this.moveKeys = {
             a: 0,
             d: 0,

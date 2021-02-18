@@ -185,7 +185,7 @@ function update(timeStamp) {
             }
         }
         player.update(GRAVITY, FRICTION, currentWorld, worldArray, nextWorld, tileSheet, setGameState);
-        enemy.update(GRAVITY, currentWorld);
+        enemy.update(currentWorld);
         draw(timeStamp);
     } else if (gameState === "PAUSED") {
 

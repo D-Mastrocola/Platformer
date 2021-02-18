@@ -5,9 +5,8 @@ class Enemy {
     this.path = [path[0] * 32, path[1] * 32];
     this.width = 32;
     this.height = 32;
-    this.moveSpeed = 6;
+    this.moveSpeed = 5;
     this.xSpeed = startSpeed * this.moveSpeed;
-    this.ySpeed = 0;
   }
   checkCollisions(world) {
     //World bounds
@@ -33,10 +32,8 @@ class Enemy {
       this.xSpeed *= -1;
     }
   }
-  update(GRAVITY, world) {
-    this.ySpeed += GRAVITY;
+  update(world) {
     this.x += this.xSpeed;
-    this.y += this.ySpeed;
     this.checkCollisions(world);
   }
   draw(context) {
