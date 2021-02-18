@@ -8,13 +8,13 @@ class Player {
         this.jumpSpeed = -7;
         this.jumpMultiplier = 1;
         this.speedMultiplier = 1;
-        this.moveSpeed = 6;
+        this.moveSpeed = 5;
         this.moveKeys = {
             a: 0,
             d: 0,
             space: 0,
         };
-        this.xAcceleration = 1.2;
+        this.xAcceleration = 1.5;
         this.xSpeed = 0;
         this.ySpeed = 0;
         this.sprites = sprites;
@@ -33,7 +33,7 @@ class Player {
 
         this.boundArray = [];
     }
-    setSpeed(GRAVITY) {
+    setSpeed(GRAVITY, FRICTION) {
         if (this.moveKeys.a === 1) {
             if (this.moveKeys.d !== 1) {
                 this.xSpeed -= this.xAcceleration;
@@ -96,8 +96,15 @@ class Player {
             }
         }
         this.ySpeed += GRAVITY;
+        if(this.xSpeed > 0 && this.moveKeys.d !== 1) {
+            this.xSpeed -= FRICTION;
+            if(this.xSpeed < 0) this.xSpeed = 0;
+        } else if(this.xSpeed < 0 && this.moveKeys.a !== 1){
+            this.xSpeed += FRICTION;
+            if(this.xSpeed > 0) this.xSpeed = 0;
+        }
     }
-    checkCollisions(world, worldArray, nextLevel, tileSheet, FRICTION) {
+    checkCollisions(world, worldArray, nextLevel, tileSheet, setGameState) {
         //World bounds
         if (this.x + this.xSpeed <= 0) {
             this.x = 0;
@@ -139,7 +146,7 @@ class Player {
                                     world.objArray[i][j] = 0;
                                     continue;
                                 } else if (world.objArray[i][j].spriteID === ">") {
-                                    nextLevel.nextWorld(world, worldArray, this, tileSheet);
+                                    nextLevel.nextWorld(world, worldArray, this, tileSheet, setGameState);
                                     continue;
                                 } else if (world.objArray[i][j].spriteID === ".1" || world.objArray[i][j].spriteID === ".2" || world.objArray[i][j].spriteID === ".3" || world.objArray[i][j].spriteID === ".4") {
                                     this.score += world.objArray[i][j].score;
@@ -154,15 +161,7 @@ class Player {
                                     } else {
                                         this.y = world.objArray[i][j].y + this.height;
                                     }
-                                    this.ySpeed = 0;
-                                    if(this.xSpeed > 0 && this.moveKeys.d !== 1) {
-                                        this.xSpeed -= FRICTION;
-                                        if(this.xSpeed < 0) this.xSpeed = 0;
-                                    } else if(this.xSpeed < 0 && this.moveKeys.a !== 1){
-                                        this.xSpeed += FRICTION;
-                                        if(this.xSpeed > 0) this.xSpeed = 0;
-                                    }
-                                    
+                                    this.ySpeed = 0;                    
                                 } else if (this.y + this.height > world.objArray[i][j].y &&
                                     this.y < world.objArray[i][j].y + this.height) {
                                     if (this.xSpeed > 0) {
@@ -180,9 +179,9 @@ class Player {
         }
 
     }
-    update(GRAVITY, FRICTION, world, worldArray, nextWorld, tileSheet) {
-        this.setSpeed(GRAVITY);
-        this.checkCollisions(world, worldArray, nextWorld, tileSheet, FRICTION);
+    update(GRAVITY, FRICTION, world, worldArray, nextWorld, tileSheet, setGameState) {
+        this.setSpeed(GRAVITY, FRICTION);
+        this.checkCollisions(world, worldArray, nextWorld, tileSheet, setGameState);
         this.lastPosition.x = this.x;
         this.lastPosition.y = this.y;
         this.x += this.xSpeed;

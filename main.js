@@ -1,7 +1,7 @@
 import { Player } from "./player.js";
 import { World } from "./world.js";
 import { NextWorld } from "./nextlevel.js";
-
+import { Enemy } from './enemy.js';
 
 
 let canvas;
@@ -15,6 +15,9 @@ const GRAVITY = .3;
 const FRICTION = .8;
 
 let player;
+
+let enemy;
+
 let nextWorld;
 
 let spritePlayerIdleRight;
@@ -29,7 +32,9 @@ let spritePlayerFallLeft;
 let worldArray = [];
 
 let tileSheet = document.getElementById("block");
-
+function setGameState(state) {
+    gameState = state;
+}
 function init() {
     canvas = document.getElementById("canvas");
     context = canvas.getContext("2d");
@@ -131,7 +136,7 @@ function init() {
             ]
         )
     ]
-
+    enemy = new Enemy(64, 64, 1, [1, 8]);
     nextWorld = new NextWorld(0, 0, 32, tileSheet, { x: 5 * 32, y: 1 * 32, tileSize: 32 });
 
     currentWorld = worldArray[0];
@@ -139,7 +144,7 @@ function init() {
     currentWorld.loadWorld(currentWorld.objString, player, nextWorld, tileSheet);
     canvas.width = currentWorld.objString[0].length * 32;
     canvas.height = currentWorld.objString.length * 32;
-    gameState = "RUNNING";
+    setGameState('RUNNING')
     window.requestAnimationFrame(gameLoop);
 }
 
@@ -157,8 +162,8 @@ function draw(timeStamp) {
         }
     }
     player.draw(context, timeStamp);
+    enemy.draw(context);
     nextWorld.draw(context);
-
     /*//FPS counter
     context.font = "25px Arial";
     context.fillStyle = "#000";
@@ -179,10 +184,18 @@ function update(timeStamp) {
                 }
             }
         }
-        player.update(GRAVITY, FRICTION, currentWorld, worldArray, nextWorld, tileSheet);
+        player.update(GRAVITY, FRICTION, currentWorld, worldArray, nextWorld, tileSheet, setGameState);
+        enemy.update(currentWorld);
         draw(timeStamp);
     } else if (gameState === "PAUSED") {
 
+    } else if (gameState === 'COMPLETE') {
+        context.fillStyle = "#000";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            context.font = "40px Arial";
+            context.fillStyle = "#fff";
+            context.fillText("COMPLETE", canvas.width / 2 - 90, canvas.height / 2);
     }
 }
 
@@ -223,7 +236,7 @@ document.addEventListener("keydown", function(e) {
     //esc 
     if (e.keyCode === 27) {
         if (gameState === "RUNNING") {
-            gameState = "PAUSED";
+            setGameState('PAUSED');
             context.fillStyle = "rgba(0, 0, 0, .2)";
             context.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -231,7 +244,7 @@ document.addEventListener("keydown", function(e) {
             context.fillStyle = "#fff";
             context.fillText("PAUSED", canvas.width / 2 - 90, canvas.height / 2);
         } else {
-            gameState = "RUNNING";
+            setGameState('RUNNING');
         }
     }
 });
