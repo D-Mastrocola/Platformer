@@ -12,7 +12,7 @@ var currentWorld
 let gameState;
 
 const GRAVITY = .3;
-const FRICTION = 0.1;
+const FRICTION = .35;
 
 let player;
 let nextWorld;
@@ -179,7 +179,7 @@ function update(timeStamp) {
                 }
             }
         }
-        player.update(GRAVITY, currentWorld, worldArray, nextWorld, tileSheet);
+        player.update(GRAVITY, FRICTION, currentWorld, worldArray, nextWorld, tileSheet);
         draw(timeStamp);
     } else if (gameState === "PAUSED") {
 
