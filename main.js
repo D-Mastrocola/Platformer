@@ -2,6 +2,7 @@ import { Player } from "./player.js";
 import { World } from "./world.js";
 import { NextWorld } from "./nextlevel.js";
 import { Enemy } from './enemy.js';
+import Menu from './menu.js';
 
 
 let canvas;
@@ -30,6 +31,8 @@ let spritePlayerFallRight;
 let spritePlayerFallLeft;
 
 let worldArray = [];
+
+let menu
 
 let tileSheet = document.getElementById("block");
 function setGameState(state) {
@@ -144,7 +147,10 @@ function init() {
     currentWorld.loadWorld(currentWorld.objString, player, nextWorld, tileSheet);
     canvas.width = currentWorld.objString[0].length * 32;
     canvas.height = currentWorld.objString.length * 32;
-    setGameState('RUNNING')
+
+    menu = new Menu();
+
+    setGameState('MENU')
     window.requestAnimationFrame(gameLoop);
 }
 
@@ -164,10 +170,9 @@ function draw(timeStamp) {
     player.draw(context, timeStamp);
     enemy.draw(context);
     nextWorld.draw(context);
-    /*//FPS counter
     context.font = "25px Arial";
     context.fillStyle = "#000";
-    context.fillText("FPS: " + fps, 10, 30);*/
+    context.fillText("FPS: " + fps, 10, 30);
 
     //Score display
     context.font = "20px Arial";
@@ -187,9 +192,13 @@ function update(timeStamp) {
         player.update(GRAVITY, FRICTION, currentWorld, worldArray, nextWorld, tileSheet, setGameState);
         enemy.update(currentWorld);
         draw(timeStamp);
-    } else if (gameState === "PAUSED") {
-
-    } else if (gameState === 'COMPLETE') {
+    } else if(gameState === "MENU") {
+        
+        menu.update(context, canvas);
+        
+    } 
+    else if (gameState === "PAUSED") {} 
+    else if (gameState === 'COMPLETE') {
         context.fillStyle = "#000";
             context.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -231,7 +240,11 @@ document.addEventListener("keydown", function(e) {
     }
     //space
     if (e.keyCode === 32) {
-        player.moveKeys.space = 1;
+        if(gameState === 'MENU') {
+            setGameState('RUNNING')
+        }else {
+            player.moveKeys.space = 1;
+        }
     }
     //esc 
     if (e.keyCode === 27) {
@@ -243,7 +256,7 @@ document.addEventListener("keydown", function(e) {
             context.font = "40px Arial";
             context.fillStyle = "#fff";
             context.fillText("PAUSED", canvas.width / 2 - 90, canvas.height / 2);
-        } else {
+        } else if(gameState !== 'COMPLETE') {
             setGameState('RUNNING');
         }
     }
