@@ -1,7 +1,7 @@
 import { JumpPowerup } from "./jumppowerup.js"
 import { Platform } from "./platform.js";
 import { Coin } from "./coin.js";
-
+import { Key } from './key.js'
 class World {
     constructor(objString) {
         this.objString = objString;
@@ -162,6 +162,15 @@ class World {
                         ".4"
                     );
                     this.objArray[i].push(coin);
+                } else if(this.objString[i][j] === 'k') {
+                    let key = new Key(j * this.objSize,
+                        i * this.objSize,
+                        this.objSize,
+                        tileSheet,
+                        getTileSprite("k"),
+                        "k"
+                    );
+                    this.objArray[i].push(key);
                 }
             }
         }
@@ -227,6 +236,9 @@ function getTileSprite(spriteID) {
     } else if (spriteID === ".4") {
         startPosition.x = 6 * startPosition.tileSize;
         startPosition.y = 8 * startPosition.tileSize;
+    } else if(spriteID === "k") {
+        startPosition.x = 0 * startPosition.tileSize;
+        startPosition.y = 10 * startPosition.tileSize;
     }
     return startPosition;
 }
