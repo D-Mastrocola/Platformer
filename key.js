@@ -8,7 +8,6 @@ class Key {
         this.spriteID = spriteID;
     }
     update() {
-
     }
     draw(context) {
         context.drawImage(

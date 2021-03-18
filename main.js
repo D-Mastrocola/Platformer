@@ -253,6 +253,7 @@ function gameLoop(timeStamp) {
 }
 
 document.addEventListener("keydown", function(e) {
+    console.log(e.keyCode);
     //left
     if (e.keyCode === 65) {
         player.moveKeys.a = 1;
@@ -268,6 +269,10 @@ document.addEventListener("keydown", function(e) {
         }else {
             player.moveKeys.space = 1;
         }
+    }
+    //Shift
+    if (e.keyCode === 16) {
+        player.throwStar();
     }
     //esc 
     if (e.keyCode === 27) {

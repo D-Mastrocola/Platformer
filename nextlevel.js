@@ -37,6 +37,7 @@ class NextWorld {
       player.speedMultiplier = 1;
       player.jumpMultiplier = 1;
       player.hasKey = false;
+      player.thrownStars = [];
       console.log(world.objArray);
     }
   }

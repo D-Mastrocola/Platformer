@@ -1,3 +1,5 @@
+import { ThrowingStar } from './throwingStar.js';
+
 class Player {
   constructor(x, y, sprite, sprites) {
     this.x = x;
@@ -28,7 +30,7 @@ class Player {
       x: 0,
       y: 0,
     };
-
+    this.thrownStars = [];
     this.score = 0;
     this.hasKey = false;
     this.boundArray = [];
@@ -202,6 +204,15 @@ class Player {
       }
     }
   }
+  throwStar() {
+    let star;
+    if(this.dir === 'right') {
+      star = new ThrowingStar(this.x + this.width, this.y + (this.height / 2), 1);
+    } else {
+      star = new ThrowingStar(this.x, this.y + (this.height / 2), -1);
+    }
+    this.thrownStars.push(star);
+  }
   update(
     GRAVITY,
     FRICTION,
@@ -217,6 +228,9 @@ class Player {
     this.lastPosition.y = this.y;
     this.x += this.xSpeed;
     this.y += this.ySpeed;
+    this.thrownStars.forEach((e) => {
+      e.update();
+    })
   }
   draw(context, timeStamp) {
     this.deltaTime = timeStamp - this.lastFrameTime;
@@ -236,6 +250,9 @@ class Player {
       this.lastFrameTime = timeStamp;
       this.deltaTime = 0;
     }
+    this.thrownStars.forEach((e) => {
+      e.draw(context);
+    })
   }
   animateSprite() {
     this.frame++;
