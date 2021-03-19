@@ -9,7 +9,6 @@ class Menu {
         context.fillText("Press Space to Start", canvas.width/2 - 90, canvas.height/2 + 90);
     }
     update(context, canvas) {
-        console.log('menu')
         this.draw(context, canvas);
     }
 }

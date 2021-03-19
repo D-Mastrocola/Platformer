@@ -9,18 +9,20 @@ class NextWorld {
     this.tileXY = tileXY;
   }
 
-  draw(context) {
-    context.drawImage(
-      this.sprite,
-      this.tileXY.x,
-      this.tileXY.y,
-      this.tileXY.tileSize,
-      this.tileXY.tileSize,
-      this.x,
-      this.y,
-      this.size,
-      this.size
-    );
+  draw(context, player) {
+    if (player.hasKey) {
+      context.drawImage(
+        this.sprite,
+        this.tileXY.x,
+        this.tileXY.y,
+        this.tileXY.tileSize,
+        this.tileXY.tileSize,
+        this.x,
+        this.y,
+        this.size,
+        this.size
+      );
+    }
   }
   update() {}
   nextWorld(world, worldArray, player, tileSheet, setGameState) {
@@ -34,10 +36,7 @@ class NextWorld {
         this,
         tileSheet
       );
-      player.speedMultiplier = 1;
-      player.jumpMultiplier = 1;
-      player.hasKey = false;
-      player.thrownStars = [];
+      player.reset();
       console.log(world.objArray);
     }
   }

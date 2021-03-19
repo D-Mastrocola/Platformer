@@ -1,4 +1,4 @@
-import { ThrowingStar } from './throwingStar.js';
+import { ThrowingStar } from "./throwingStar.js";
 
 class Player {
   constructor(x, y, sprite, sprites) {
@@ -15,6 +15,17 @@ class Player {
       a: 0,
       d: 0,
       space: 0,
+      shift: 0,
+    };
+    this.timers = {
+      jumpPowerTime: {
+        start: 0,
+        length: 20_000,
+      },
+      throwTime: {
+        start: 0,
+        length: 500,
+      },
     };
     this.xAcceleration = 1.5;
     this.xSpeed = 0;
@@ -148,6 +159,7 @@ class Player {
                 //Checks to see if is the speed powerup
                 if (world.objArray[i][j].spriteID === "!") {
                   this.jumpMultiplier = 1.6;
+                  this.timers.jumpPowerTime.start = Date.now();
                   world.objArray[i][j] = 0;
                   continue;
                 } else if (world.objArray[i][j].spriteID === ">") {
@@ -170,10 +182,10 @@ class Player {
                   this.score += world.objArray[i][j].score;
                   world.objArray[i][j] = 0;
                   continue;
-                } else if(world.objArray[i][j].spriteID === "k") {
-                    this.hasKey = true;
-                    world.objArray[i][j] = 0;
-                    continue;
+                } else if (world.objArray[i][j].spriteID === "k") {
+                  this.hasKey = true;
+                  world.objArray[i][j] = 0;
+                  continue;
                 }
                 if (
                   this.x + this.width > world.objArray[i][j].x &&
@@ -205,13 +217,21 @@ class Player {
     }
   }
   throwStar() {
-    let star;
-    if(this.dir === 'right') {
-      star = new ThrowingStar(this.x + this.width, this.y + (this.height / 2), 1);
-    } else {
-      star = new ThrowingStar(this.x, this.y + (this.height / 2), -1);
+    if (this.moveKeys.shift === 1 && Date.now() - this.timers.throwTime.start  > this.timers.throwTime.length) {
+      
+      this.timers.throwTime.start = Date.now();
+      let star;
+      if (this.dir === "right") {
+        star = new ThrowingStar(
+          this.x + this.width + this.xSpeed,
+          this.y + this.height / 2,
+          1
+        );
+      } else {
+        star = new ThrowingStar(this.x + this.xSpeed, this.y + this.height / 2, -1);
+      }
+      this.thrownStars.push(star);
     }
-    this.thrownStars.push(star);
   }
   update(
     GRAVITY,
@@ -228,9 +248,16 @@ class Player {
     this.lastPosition.y = this.y;
     this.x += this.xSpeed;
     this.y += this.ySpeed;
+    this.throwStar();
     this.thrownStars.forEach((e) => {
-      e.update();
-    })
+      e.update(GRAVITY);
+    });
+    if (
+      Date.now() - this.timers.jumpPowerTime.start >
+      this.timers.jumpPowerTime.length
+    ) {
+      this.jumpMultiplier = 1;
+    }
   }
   draw(context, timeStamp) {
     this.deltaTime = timeStamp - this.lastFrameTime;
@@ -252,13 +279,43 @@ class Player {
     }
     this.thrownStars.forEach((e) => {
       e.draw(context);
-    })
+    });
+    if (
+      Date.now() - this.timers.jumpPowerTime.start <
+      this.timers.jumpPowerTime.length
+    ) {
+      let timer = Math.round(
+        (this.timers.jumpPowerTime.start +
+          this.timers.jumpPowerTime.length -
+          Date.now()) /
+          1000
+      );
+      context.font = "40px Arial";
+      context.fillStyle = "#fd0";
+      context.fillText("Boost: " + timer, 10, context.canvas.height - 20);
+    }
   }
   animateSprite() {
     this.frame++;
     if (this.frame >= this.frameCount) {
       this.frame = 0;
     }
+  }
+  reset() {
+    this.speedMultiplier = 1;
+    this.jumpMultiplier = 1;
+    this.hasKey = false;
+    this.thrownStars = [];
+    this.timers = {
+      jumpPowerTime: {
+        start: 0,
+        length: 20_000,
+      },
+      throwTime: {
+        start: 0,
+        length: 500,
+      },
+    };
   }
 }
 export { Player };
