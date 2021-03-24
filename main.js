@@ -1,8 +1,8 @@
-import { Player } from "./player.js";
-import { World } from "./world.js";
-import { NextWorld } from "./nextlevel.js";
-import { Enemy } from './enemy.js';
-import Menu from './menu.js';
+import { Player } from "./objects/player.js";
+import { World } from "./objects/world.js";
+import { NextWorld } from "./objects/nextlevel.js";
+import { Enemy } from './objects/enemy.js';
+import Menu from './objects/menu.js';
 
 
 let canvas;
