@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>Dungeon Game</title>
+    <link href="style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <img id="player-idle-right" src="images/idle-right.png"/>
+    <img id="player-idle-left" src="images/idle-left.png"/>
+    <img id="player-run-right" src="images/run-right.png"/>
+    <img id="player-run-left" src="images/run-left.png"/>
+    <img id="player-jump-right" src="images/jump-right.png"/>
+    <img id="player-jump-left" src="images/jump-left.png"/>
+    <img id="player-fall-right" src="images/fall-right.png"/>
+    <img id="player-fall-left" src="images/fall-left.png"/>
+    
+    <img id="tilesheet" src="images/Tilesheet.png"/>
+    <div id='controls'>
+      <h2>Controls</h2>
+      <ul>
+        <li><span class='command'>Move:</span> A, D</li>
+        <li><span class='command'>Jump:</span> Space</li>
+        <li><span class='command'>Throw:</span> Shift</li>
+        <li><span class='command'>Pause:</span> Esc</li>
+      </ul>
+    </div>
+    <canvas id="canvas"></canvas>
+    <script src="main.js" type="module"></script>
+    <!--
+      <script src="player.js" type="module"></script
+    -->
+  </body>
+</html>
