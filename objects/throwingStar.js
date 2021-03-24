@@ -3,8 +3,8 @@ class ThrowingStar {
         //sprite, tileXY, spriteID)
         this.x = x;
         this.y = y;
-        this.xSpeed = 8 * speed;
-        this.ySpeed = -8;
+        this.xSpeed = 10 * speed;
+        this.ySpeed = -3;
         this.width = 10;
         this.height = 10;
         this.sprite = new Image();
@@ -13,7 +13,19 @@ class ThrowingStar {
         //this.tileXY = tileXY;
         //this.spriteID = spriteID;
     }
-    update(GRAVITY) {
+    update(enemies, GRAVITY) {
+        //Enemy collision
+    for(let i = 0; i < enemies.length; i++) {
+        if(this.x + this.width > enemies[i].x &&
+          this.x < enemies[i].x + 32) {
+            if (
+              this.y + this.height + this.ySpeed > enemies[i].y &&
+              this.y + this.ySpeed < enemies[i].y + 32
+            ) {
+              enemies[i] = ''
+            }
+          }
+      }
         this.x += this.xSpeed;
         this.y += this.ySpeed;
         this.ySpeed += GRAVITY;

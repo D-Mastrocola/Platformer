@@ -1,14 +1,13 @@
 class Enemy {
-  constructor(x, y, startSpeed, path) {
+  constructor(x, y, startSpeed) {
     this.x = x;
     this.y = y;
-    this.path = [path[0] * 32, path[1] * 32];
     this.width = 32;
     this.height = 32;
     this.moveSpeed = 5;
     this.xSpeed = startSpeed * this.moveSpeed;
   }
-  checkCollisions(world) {
+  checkCollisions() {
     //World bounds
     if (this.x + this.xSpeed <= 0) {
       this.x = 0;
@@ -22,19 +21,10 @@ class Enemy {
       this.y = canvas.height - this.height;
       this.ySpeed = 0;
     }
-    //Changes direction on path
-    if (this.x <= this.path[0]) {
-      this.x = this.path[0];
-      this.xSpeed *= -1;
-    }
-    if (this.x >= this.path[1]) {
-      this.x = this.path[1];
-      this.xSpeed *= -1;
-    }
   }
-  update(world) {
+  update() {
     this.x += this.xSpeed;
-    this.checkCollisions(world);
+    this.checkCollisions();
   }
   draw(context) {
     context.fillStyle = "#ff0000";

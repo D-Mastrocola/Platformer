@@ -10,7 +10,7 @@ class NextWorld {
   }
 
   draw(context, player) {
-    if (player.hasKey) {
+    if (player.hasKey && player.slayed) {
       context.drawImage(
         this.sprite,
         this.tileXY.x,

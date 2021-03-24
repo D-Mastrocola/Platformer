@@ -44,6 +44,7 @@ class Player {
     this.thrownStars = [];
     this.score = 0;
     this.hasKey = false;
+    this.slayed = false;
     this.boundArray = [];
   }
   setSpeed(GRAVITY, FRICTION) {
@@ -130,6 +131,18 @@ class Player {
       this.y = canvas.height - this.height;
       this.ySpeed = 0;
       this.jumped = false;
+    }
+    //Enemy collision
+    for(let i = 0; i < world.enemyArray.length; i++) {
+      if(this.x + this.width + this.xSpeed > world.enemyArray[i].x &&
+        this.x + this.xSpeed < world.enemyArray[i].x + this.width) {
+          if (
+            this.y + this.height + this.ySpeed > world.enemyArray[i].y &&
+            this.y + this.ySpeed < world.enemyArray[i].y + this.height
+          ) {
+            console.log('dead')
+          }
+        }
     }
     for (
       let i = Math.round(this.y / this.height) - 2;
@@ -242,16 +255,22 @@ class Player {
     tileSheet,
     setGameState
   ) {
+    this.throwStar();
+    this.thrownStars.forEach((e) => {
+      e.update(world.enemyArray ,GRAVITY);
+    });
+    this.slayed = true;
+    for(let i = 0; i < world.enemyArray.length; i++) {
+      if(world.enemyArray[i] !== '') {
+        this.slayed = false;
+      }
+    }
     this.setSpeed(GRAVITY, FRICTION);
     this.checkCollisions(world, worldArray, nextWorld, tileSheet, setGameState);
     this.lastPosition.x = this.x;
     this.lastPosition.y = this.y;
     this.x += this.xSpeed;
     this.y += this.ySpeed;
-    this.throwStar();
-    this.thrownStars.forEach((e) => {
-      e.update(GRAVITY);
-    });
     if (
       Date.now() - this.timers.jumpPowerTime.start >
       this.timers.jumpPowerTime.length
