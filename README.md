@@ -13,4 +13,4 @@ A basic platformer game.
 * JS
 * ES6 classes
 
-http://dominicmastrocola.com/portfolio/platformer/index.html
+[Live](https://d-mastrocola.github.io/Platformer/)
