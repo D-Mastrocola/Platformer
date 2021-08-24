@@ -88,7 +88,7 @@ function init() {
                 ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
                 ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "k", "0", "0", "0"],
                 ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
-                ["0", "#", "0", "0", "0", "0", "0", "0", "0", "0", ".1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", ">"],
+                ["0", "#", "0", "0", "0", "0", "0", "0", "0", "0", ".1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", ">", "0"],
                 ["1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1"]
             ]
         ),
@@ -185,7 +185,7 @@ function init() {
             ]
         )
     ]
-    enemy = new Enemy(64, 64, 1, [1, 8]);
+    //enemy = new Enemy(64, 64, 1, [1, 8]);
     nextWorld = new NextWorld(0, 0, 32, tileSheet, { x: 5 * 32, y: 1 * 32, tileSize: 32 });
 
     currentWorld = worldArray[4];
@@ -214,7 +214,7 @@ function draw(timeStamp) {
         }
     }
     for(let i = 0; i < currentWorld.enemyArray.length; i++) {
-        if(currentWorld.enemyArray[i] !== '') currentWorld.enemyArray[i].draw(context);    
+        //if(currentWorld.enemyArray[i] !== '') currentWorld.enemyArray[i].draw(context);    
     }
     player.draw(context, timeStamp);
     //enemy.draw(context);
@@ -239,10 +239,10 @@ function update(timeStamp) {
             }
         }
         for(let i = 0; i < currentWorld.enemyArray.length; i++) {
-            if(currentWorld.enemyArray[i] !== '') currentWorld.enemyArray[i].update();
+            //if(currentWorld.enemyArray[i] !== '') currentWorld.enemyArray[i].update();
         }
         player.update(GRAVITY, FRICTION, currentWorld, worldArray, nextWorld, tileSheet, setGameState);
-        enemy.update(currentWorld);
+        //enemy.update(currentWorld);
         draw(timeStamp);
     } else if(gameState === "MENU") {
         

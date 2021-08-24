@@ -133,7 +133,7 @@ class Player {
       this.jumped = false;
     }
     //Enemy collision
-    for(let i = 0; i < world.enemyArray.length; i++) {
+    /*for(let i = 0; i < world.enemyArray.length; i++) {
       if(this.x + this.width + this.xSpeed > world.enemyArray[i].x &&
         this.x + this.xSpeed < world.enemyArray[i].x + this.width) {
           if (
@@ -143,7 +143,7 @@ class Player {
             console.log('dead')
           }
         }
-    }
+    }*/
     for (
       let i = Math.round(this.y / this.height) - 2;
       i <= Math.round(this.y / this.height) + 2;
